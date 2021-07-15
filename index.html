@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://tools.bnszs.com/ingame/bs/character/data/abilities.json?c=朝醉梨花暮醉雪');
+        xhr.send();
+        xhr.onreadystatechange = function () {
+            if (xhr.status == 200 && xhr.readyState == 4) {
+                console.log(xhr.response);
+            }
+        }
+    </script>
+</body>
+
+</html>
