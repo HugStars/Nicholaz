@@ -21,7 +21,16 @@
         xhr.send();
         xhr.onreadystatechange = function () {
             if (xhr.status == 200 && xhr.readyState == 4) {
-                console.log(xhr.response);
+                console.log(JSON.parse(xhr.response));
+            }
+        }
+
+        let zbxhr = new XMLHttpRequest();
+        zbxhr.open("GET","https://tools.bnszs.com/ingame/bs/character/data/equipments?c=朝醉梨花暮醉雪&s=1919");
+        zbxhr.send();
+        zbxhr.onreadystatechange = function () {
+            if (zbxhr.status == 200 && zbxhr.readyState == 4) {
+                console.log(JSON.parse(zbxhr.response));
             }
         }
     </script>
