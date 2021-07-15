@@ -17,34 +17,88 @@
     <div></div>
 
     <script>
-        let str = '';
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://tools.bnszs.com/ingame/bs/character/data/abilities.json?c=朝醉梨花暮醉雪');
-        xhr.send();
-        xhr.onreadystatechange = function () {
-            if (xhr.status == 200 && xhr.readyState == 4) {
-                console.log(JSON.parse(xhr.response));
+        // let name = '棣棠花丷';
+        // let name = '路西法米米';
+        // let name = '月下轻歌叹流年';
+        let name = '朝醉梨花暮醉雪';
+        let zbArr = [];
+        let bgArr = [];
+        let mbData = ''
+
+        let search = window.location.search.split('?')[1];
+        if (search) {
+            name = search;
+        }
+
+        function getData(type, name) {
+            type == '面板' ? type = 'abilities.json' : type = 'equipments';
+            let getDataXhr = new XMLHttpRequest();
+            getDataXhr.open('GET', `https://tools.bnszs.com/ingame/bs/character/data/${type}?c=${name}&s=1919`)
+            getDataXhr.send();
+            getDataXhr.onreadystatechange = () => {
+                if (getDataXhr.status == 200 && getDataXhr.readyState == 4) {
+                    if (type == 'abilities.json') {
+                        setPanel(JSON.parse(getDataXhr.response))
+                    }
+                    else {
+                        setEquip(getDataXhr.response.toString().replace(/\n/g, ''));
+                    }
+                }
             }
         }
 
-        let zbxhr = new XMLHttpRequest();
-        zbxhr.open("GET", "https://tools.bnszs.com/ingame/bs/character/data/equipments?c=朝醉梨花暮醉雪&s=1919");
-        zbxhr.send();
-        zbxhr.onreadystatechange = function () {
-            if (zbxhr.status == 200 && zbxhr.readyState == 4) {
-                str = zbxhr.response.toString().replace(/\s*/g, "");
-
-                var start = str.indexOf("<!--무기-->");//获得字符串的开始位置
-                var end = str.indexOf("<!-- (e) 착용보패 -->")//获得字符串的结束位置
-
-                var result = str.substring(start, end);
-                // console.log(result);
-
-                //console.log(result.replace(/[^\u4e00-\u9fa50-9]/gi, ""));
-
-                document.querySelector('div').innerHTML = result;
-            }
+        function setPanel(data) {
+            console.log(data);
+            mbData = data
         }
+
+        function setEquip(data) {
+            var start = data.indexOf("<!-- 무기 -->"); //获得字符串的开始位置
+            var end = data.indexOf("<!-- (e) 착용보패 -->"); //获得字符串的结束位置
+            var result = data.substring(start, end);
+
+            data = null;
+
+            // 匹配图片、alt文本、src地址的正则
+            var imgReg = /<img.*?(?:>|\/>)/g;
+            var altReg = /alt=[\'\"]?([^\'\"]*)[\'\"]?/;
+            var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/;
+
+            var arr = result.match(imgReg);
+
+            let src = '';
+            let alt = '';
+            for (let i = 0; i < arr.length - 9; i++) {
+                src = arr[i].match(srcReg)[1];
+                alt = arr[i].match(altReg);
+                alt == null ? alt = [null, null] : alt = alt;
+                zbArr.push({ src, alt: alt[1] })
+            }
+            for (let j = arr.length - 9; j < arr.length - 1; j++) {
+                src = arr[j].match(srcReg)[1];
+                bgArr.push(src);
+            }
+            console.log(zbArr);
+            console.log(bgArr);
+
+
+            let str = '';
+            for (let i = 0; i < zbArr.length; i++) {
+                str += `
+                <img src='${zbArr[i].src}'/>
+                <span>${zbArr[i].alt}</span>
+            `
+            }
+            console.log(str);
+            document.querySelector('div').innerHTML = str;
+
+        }
+
+        getData('面板', name);
+        getData('装备', name);
+
+
+
 
 
 
