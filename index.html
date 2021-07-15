@@ -26,13 +26,17 @@
         }
 
         let zbxhr = new XMLHttpRequest();
-        zbxhr.open("GET","https://tools.bnszs.com/ingame/bs/character/data/equipments?c=朝醉梨花暮醉雪&s=1919");
+        zbxhr.open("GET", "https://tools.bnszs.com/ingame/bs/character/data/equipments?c=朝醉梨花暮醉雪&s=1919");
         zbxhr.send();
         zbxhr.onreadystatechange = function () {
             if (zbxhr.status == 200 && zbxhr.readyState == 4) {
-                console.log(zbxhr.response);
+                let str = zbxhr.response.toString();
+                console.log(str);
+                str = str.replace(/\s*/g, "");
+                console.log(str);
             }
         }
+
     </script>
 </body>
 
