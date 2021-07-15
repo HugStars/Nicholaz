@@ -14,6 +14,8 @@
 
 <body>
 
+    <div></div>
+
     <script>
         let str = '';
         let xhr = new XMLHttpRequest();
@@ -31,11 +33,16 @@
         zbxhr.onreadystatechange = function () {
             if (zbxhr.status == 200 && zbxhr.readyState == 4) {
                 str = zbxhr.response.toString().replace(/\s*/g, "");
-                var search = "<!--무기-->";
-                var start = str.indexOf(search);//获得字符串的开始位置
-                var result = str.substring(start);
+
+                var start = str.indexOf("<!--무기-->");//获得字符串的开始位置
+                var end = str.indexOf("<!-- (e) 착용보패 -->")//获得字符串的结束位置
+
+                var result = str.substring(start, end);
                 // console.log(result);
+
                 console.log(result.replace(/[^\u4e00-\u9fa50-9]/gi, ""));
+
+                document.querySelector('div').innerHTML = result;
             }
         }
 
