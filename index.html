@@ -90,6 +90,12 @@
                 <span>${zbArr[i].alt}</span>
             `
             }
+            for(let i = 0 ; i < bgArr.length; i++) {
+                str += `
+                <img src='${bgArr[i].src}'/>
+                </br>
+                `
+            }
             console.log(str);
             document.querySelector('div').innerHTML = str;
 
