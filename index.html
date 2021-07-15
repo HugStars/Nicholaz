@@ -30,7 +30,7 @@
         zbxhr.send();
         zbxhr.onreadystatechange = function () {
             if (zbxhr.status == 200 && zbxhr.readyState == 4) {
-                console.log(JSON.parse(zbxhr.response));
+                console.log(zbxhr.response);
             }
         }
     </script>
