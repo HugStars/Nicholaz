@@ -30,17 +30,15 @@
         zbxhr.send();
         zbxhr.onreadystatechange = function () {
             if (zbxhr.status == 200 && zbxhr.readyState == 4) {
-                str = zbxhr.response.toString();
-                console.log(str);
-                str = str.replace(/\s*/g, "");
-                console.log(str);
-
+                str = zbxhr.response.toString().replace(/\s*/g, "");
                 var search = "<!--무기-->";
                 var start = str.indexOf(search);//获得字符串的开始位置
-                var result = str.substring(start, start + search.length);//截取字符串
-                var aaa = str.substring(start);
-                console.log(result);
-                console.log(aaa);
+                var result = str.substring(start);
+                // console.log(result);
+                console.log(result.replace(/[^\u4e00-\u9fa5]/gi, ""));
+
+                let a = str.replace(/[^\u4e00-\u9fa5]/gi, "");
+                console.log(a);
             }
         }
 
